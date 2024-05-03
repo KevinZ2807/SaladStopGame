@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
     public class PlayerController : MonoBehaviour
     {
@@ -8,6 +9,8 @@ using UnityEngine;
         [SerializeField] private ControlMode m_controlMode = ControlMode.Direct;
         [SerializeField] private Animator m_animator = null;
         [SerializeField] private Rigidbody m_rigidBody = null;
+        [SerializeField] private Button jumpButton;
+        [SerializeField] private Button actionButton;
 
         [Header("References")]
         
@@ -34,6 +37,8 @@ using UnityEngine;
         private readonly float m_walkScale = 0.33f;
         private readonly float m_backwardsWalkScale = 0.16f;
         private readonly float m_backwardRunScale = 0.66f;
+
+        private bool m_actionInput = false;
 
         private bool m_wasGrounded;
         private Vector3 m_currentDirection = Vector3.zero;
@@ -108,11 +113,19 @@ using UnityEngine;
         }
 
         private void Update()
-        {
-            if (!m_jumpInput && Input.GetKey(KeyCode.Space))
+        {   
+            jumpButton.onClick.AddListener(OnJumpPressed);
+            actionButton.onClick.AddListener(OnActionPressed);
+            
+        }
+        void OnJumpPressed() {
+            if (!m_jumpInput)
             {
                 m_jumpInput = true;
             }
+        }
+        void OnActionPressed() {
+            m_animator.SetTrigger("Pickup");
         }
 
         private void FixedUpdate()
@@ -211,4 +224,5 @@ using UnityEngine;
                 m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
             }
         }
+
     }
