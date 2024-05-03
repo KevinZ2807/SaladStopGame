@@ -1,10 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Supercyan.FreeSample
-{
-    public class SimpleSampleCharacterControl : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
+        [Header("Attributes")]
+        [SerializeField] private VariableJoystick joystick;
+        [SerializeField] private ControlMode m_controlMode = ControlMode.Direct;
+        [SerializeField] private Animator m_animator = null;
+        [SerializeField] private Rigidbody m_rigidBody = null;
+
+        [Header("References")]
+        
+        [SerializeField] private float m_moveSpeed = 2;
+        [SerializeField] private float m_turnSpeed = 200;
+        [SerializeField] private float m_jumpForce = 4;
+        
+
         private enum ControlMode
         {
             /// <summary>
@@ -16,16 +27,6 @@ namespace Supercyan.FreeSample
             /// </summary>
             Direct
         }
-
-        [SerializeField] private float m_moveSpeed = 2;
-        [SerializeField] private float m_turnSpeed = 200;
-        [SerializeField] private float m_jumpForce = 4;
-
-        [SerializeField] private Animator m_animator = null;
-        [SerializeField] private Rigidbody m_rigidBody = null;
-
-        [SerializeField] private ControlMode m_controlMode = ControlMode.Direct;
-
         private float m_currentV = 0;
         private float m_currentH = 0;
 
@@ -139,8 +140,8 @@ namespace Supercyan.FreeSample
 
         private void TankUpdate()
         {
-            float v = Input.GetAxis("Vertical");
-            float h = Input.GetAxis("Horizontal");
+            float v = joystick.Vertical;
+            float h = joystick.Horizontal;
 
             bool walk = Input.GetKey(KeyCode.LeftShift);
 
@@ -167,8 +168,8 @@ namespace Supercyan.FreeSample
 
         private void DirectUpdate()
         {
-            float v = Input.GetAxis("Vertical");
-            float h = Input.GetAxis("Horizontal");
+            float v = joystick.Vertical;
+            float h = joystick.Horizontal;
 
             Transform camera = Camera.main.transform;
 
@@ -211,4 +212,3 @@ namespace Supercyan.FreeSample
             }
         }
     }
-}
