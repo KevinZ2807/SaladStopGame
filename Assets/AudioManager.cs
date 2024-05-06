@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager instance;
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource soundSource;
@@ -14,11 +15,16 @@ public class AudioManager : MonoBehaviour
     public AudioClip tapSound;
 
     void Start() {
+        instance = this;
         musicSource.clip = backgroundMusic;
         musicSource.Play();
     }
 
     public void PlaySFX(AudioClip clip) {
         soundSource.PlayOneShot(clip);
+    }
+
+    public void PlayTapSound() {
+        soundSource.PlayOneShot(tapSound);
     }
 }
