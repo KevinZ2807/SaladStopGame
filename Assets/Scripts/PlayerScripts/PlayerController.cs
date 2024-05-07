@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
+using DG.Tweening;
 
     public class PlayerController : MonoBehaviour
     {
@@ -40,6 +42,9 @@ using System.Linq;
         private bool m_isGrounded;
 
         private Vector3 lastMoveDir;
+
+        
+        private float YAxis, delay;
 
 
 
@@ -100,6 +105,16 @@ using System.Linq;
             if (m_collisions.Count == 0) { m_isGrounded = false; }
         }
 
+        private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("dollar"))
+        {
+            Destroy(other.gameObject);
+            GameManager.instance.UpdateMoney(5);
+        }
+    }
+
+
         // ------------------------------------ AWAKE ------------------------------------------
         private void Awake()
         {
@@ -153,16 +168,42 @@ using System.Linq;
         }
 
         void DetectInteraction(float h, float v) {
-            float interactDistance = 2f;
+            //float interactDistance = 2f;
             Vector3 moveDir = new Vector3(h, 0f, v);
             if (moveDir != Vector3.zero) lastMoveDir = moveDir; 
-            if (Physics.Raycast(transform.position, lastMoveDir, out RaycastHit raycastHit, interactDistance, layerMask)) { // Create a raycast to detect object in front
-                Debug.Log(raycastHit);
-                var stuff = raycastHit.collider.transform;
-                stuff.rotation = Quaternion.Euler(stuff.rotation.x,Random.Range(0f,180f),stuff.rotation.z);
-                stuffs.Add(stuff);
-                stuff.parent = null;
-                stuff.GetComponent<Stuffs>().CancelDestruction();
+            if (Physics.Raycast(transform.position,transform.forward,out var raycastHit,1f)) { // Create a raycast to detect object in front
+                if (raycastHit.collider.CompareTag("Pickup") && stuffs.Count < 21) {
+                    Debug.Log(raycastHit);
+                    var stuff = raycastHit.collider.transform;
+                    stuff.rotation = Quaternion.Euler(stuff.rotation.x,Random.Range(0f,180f),stuff.rotation.z);
+                    stuffs.Add(stuff);
+                    stuff.parent = null;
+                    stuff.GetComponent<Stuffs>().CancelDestruction();
+                }
+                if (raycastHit.collider.CompareTag("PlaceDown") && stuffs.Count > 1) {
+                    var WorkDesk = raycastHit.collider.transform;
+
+                    if (WorkDesk.childCount > 0) {
+                        YAxis = WorkDesk.GetChild(WorkDesk.childCount - 1).position.y;
+                    }
+                    else {
+                        YAxis = WorkDesk.position.y;
+                    }
+
+                    for (var index = stuffs.Count - 1; index >= 1; index--) {
+                        stuffs[index].DOJump(new Vector3(WorkDesk.position.x, YAxis, WorkDesk.position.z), 2f, 1, 0.2f)
+                            .SetDelay(delay).SetEase(Ease.Flash);
+
+                        stuffs.ElementAt(index).parent = WorkDesk;
+                        stuffs.RemoveAt(index);
+
+                        YAxis += 0.17f;
+                        delay += 0.02f;
+                    }
+
+                WorkDesk.parent.GetChild(WorkDesk.parent.childCount - 1).GetComponent<Renderer>().enabled = false;
+                
+                }
             }
         }
 
