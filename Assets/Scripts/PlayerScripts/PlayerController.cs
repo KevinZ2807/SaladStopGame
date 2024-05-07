@@ -13,6 +13,7 @@ using System.Linq;
         [SerializeField] private Button actionButton;
         [SerializeField] private Button sprintButton;
         [SerializeField] private LayerMask layerMask;
+        [SerializeField] private ParticleSystem runningEffect;
 
         [SerializeField] private List<Transform> stuffs = new List<Transform>();
         [SerializeField] private Transform holdingPlace;
@@ -103,7 +104,7 @@ using System.Linq;
         private void Awake()
         {
             if (!m_animator) { gameObject.GetComponent<Animator>(); }
-            if (!m_rigidBody) { gameObject.GetComponent<Animator>(); }
+            if (!m_rigidBody) { gameObject.GetComponent<Rigidbody>(); }
             if (m_sprintToggle) sprintButton.image.color = Color.green; else sprintButton.image.color = Color.red;
         }
 
@@ -165,6 +166,18 @@ using System.Linq;
             }
         }
 
+        private void RunningParticle() {
+            if (isRunning && !runningEffect.isPlaying) {
+                runningEffect.Play();
+            }
+            else if (!isRunning && runningEffect.isPlaying) {
+                runningEffect.Stop();
+            }     
+        }
+
+
+        private bool isRunning = false;
+        
         private void DirectUpdate()
         {
             float v = joystick.Vertical * m_moveSpeed;
@@ -177,7 +190,10 @@ using System.Linq;
                 v *= m_walkScale;
                 h *= m_walkScale;
             }
+            if (Mathf.Sqrt(v * v + h * h) >= 0.5f) {isRunning = true;}
+            else {isRunning = false;}
 
+            RunningParticle();
 
             RotateCharacter(v, h);
             JumpingAndLanding();
