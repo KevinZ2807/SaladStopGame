@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Pickup
   - PlaceDown
+  - dollar
+  - workingPlace
   layers:
   - Default
   - TransparentFX

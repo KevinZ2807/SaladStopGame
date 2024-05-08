@@ -107,6 +107,10 @@ using DG.Tweening;
 
         private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("PlaceDown")) {
+            Debug.Log("Start Working");
+            other.GetComponent<ServiceTable>().Work();
+        }   
         if (other.CompareTag("dollar"))
         {
             Destroy(other.gameObject);
@@ -177,18 +181,19 @@ using DG.Tweening;
                     var stuff = raycastHit.collider.transform;
                     stuff.rotation = Quaternion.Euler(stuff.rotation.x,Random.Range(0f,180f),stuff.rotation.z);
                     stuffs.Add(stuff);
-                    stuff.parent = null;
+                    //stuff.parent = null;
+                    stuff.parent = gameObject.transform.Find("inventory");
                     stuff.GetComponent<Stuffs>().CancelDestruction();
                 }
                 if (raycastHit.collider.CompareTag("PlaceDown") && stuffs.Count > 1) {
-                    var WorkDesk = raycastHit.collider.transform;
+                    var WorkDesk = raycastHit.collider.transform.GetChild(0);
 
-                    if (WorkDesk.childCount > 0) {
-                        YAxis = WorkDesk.GetChild(WorkDesk.childCount - 1).position.y;
-                    }
-                    else {
-                        YAxis = WorkDesk.position.y;
-                    }
+                    //if (WorkDesk.childCount > 0) {
+                    //YAxis = WorkDesk.GetChild(WorkDesk.childCount - 1).position.y;
+                    //}
+                    //else {
+                    YAxis = WorkDesk.position.y;
+                    //}
 
                     for (var index = stuffs.Count - 1; index >= 1; index--) {
                         stuffs[index].DOJump(new Vector3(WorkDesk.position.x, YAxis, WorkDesk.position.z), 2f, 1, 0.2f)
@@ -197,11 +202,9 @@ using DG.Tweening;
                         stuffs.ElementAt(index).parent = WorkDesk;
                         stuffs.RemoveAt(index);
 
-                        YAxis += 0.17f;
+                        YAxis += 0.05f;
                         delay += 0.02f;
                     }
-
-                WorkDesk.parent.GetChild(WorkDesk.parent.childCount - 1).GetComponent<Renderer>().enabled = false;
                 
                 }
             }

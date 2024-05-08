@@ -7,9 +7,9 @@ using UnityEngine;
 public class ServiceTable : MonoBehaviour
 {
     //public Animator female_anim;
-    [SerializeField] private Transform FoodPlace;
-    [SerializeField] private GameObject Food;
-    private float YAxis;
+    [SerializeField] private Transform moneyPlace;
+    [SerializeField] private GameObject money;
+    private float YAxis = 0f;
     private IEnumerator makeMoneyIE;
 
     private void Start()
@@ -28,27 +28,29 @@ public class ServiceTable : MonoBehaviour
 
     private IEnumerator MakeMoney()
     {
+        Debug.Log("Making money");
         var counter = 0;
-        var FoodPlaceIndex = 0;
+        var MoneyPlaceIndex = 0;
         
         yield return new WaitForSecondsRealtime(2);
 
         while (counter < transform.childCount)
         {
-            GameObject NewDollar = Instantiate(Food, new Vector3(FoodPlace.GetChild(FoodPlaceIndex).position.x,
-                    YAxis, FoodPlace.GetChild(FoodPlaceIndex).position.z),
-                FoodPlace.GetChild(FoodPlaceIndex).rotation);
+            Debug.Log("Enter while loop");
+            GameObject NewDollar = Instantiate(money, new Vector3(moneyPlace.GetChild(MoneyPlaceIndex).position.x,
+                    YAxis, moneyPlace.GetChild(MoneyPlaceIndex).position.z),
+                moneyPlace.GetChild(MoneyPlaceIndex).rotation);
 
             NewDollar.transform.DOScale(new Vector3(0.4f, 0.4f, 0.6f), 0.5f).SetEase(Ease.OutElastic);
 
-            if (FoodPlaceIndex < FoodPlace.childCount - 1)
+            if (MoneyPlaceIndex < moneyPlace.childCount - 1)
             {
-                FoodPlaceIndex++;
+                MoneyPlaceIndex++;
             }
             else
             {
-                FoodPlaceIndex = 0;
-                YAxis += 0.5f;
+                MoneyPlaceIndex = 0;
+                YAxis += 0.01f;
             }
             
             yield return new WaitForSecondsRealtime(3f);
@@ -64,11 +66,7 @@ public class ServiceTable : MonoBehaviour
         else
         {
             //female_anim.SetBool("work",false);
-
-            var Desk = transform.parent;
-
-            Desk.GetChild(Desk.childCount - 1).GetComponent<Renderer>().enabled = true;
-            
+            Debug.Log("Stop making money");
             StopCoroutine(makeMoneyIE);
 
             YAxis = 0f;

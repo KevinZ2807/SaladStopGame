@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8622727559414144714}
   - component: {fileID: 3632244401240230111}
   - component: {fileID: 532995948583516751}
+  - component: {fileID: 4469716462310048101}
   m_Layer: 0
   m_Name: Nugget_01
   m_TagString: Pickup
@@ -103,5 +104,17 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.07510288, y: 0.028599376, z: 0.107980244}
-  m_Center: {x: 0.0056626517, y: -0.000010098331, z: 0.0058153197}
+  m_Size: {x: 0.07593751, y: 0.04104381, z: 0.107980244}
+  m_Center: {x: 0.0060799643, y: 0.0014200388, z: 0.0058153197}
+--- !u!114 &4469716462310048101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5043411238273362075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01b39d0fc6f92c8409a5cf1477929b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

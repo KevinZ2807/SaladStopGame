@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3908294523663384881}
   - component: {fileID: 3753590336855299362}
   - component: {fileID: 3768441063250109759}
+  - component: {fileID: 4811405657296566048}
+  - component: {fileID: 1657518664020536128}
   m_Layer: 0
   m_Name: Fries Box_01
   m_TagString: Pickup
@@ -84,6 +86,41 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4811405657296566048
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4601807697355163923}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.09543419
+  m_Height: 0.27532998
+  m_Direction: 1
+  m_Center: {x: 0.000000011175871, y: 0.13766499, z: -0.010442095}
+--- !u!114 &1657518664020536128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4601807697355163923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01b39d0fc6f92c8409a5cf1477929b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8168484725135791947
 GameObject:
   m_ObjectHideFlags: 0
