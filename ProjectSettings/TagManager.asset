@@ -8,6 +8,7 @@ TagManager:
   - PlaceDown
   - dollar
   - workingPlace
+  - NPC
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private GameObject NPC_Spawner;
+    public GameObject leavingPosition;
     [SerializeField] private int money = 0;
     private bool isPaused = false;
     void Start() {
@@ -28,5 +30,9 @@ public class GameManager : MonoBehaviour
     }
     public void SetMoneyUI() {
         moneyText.text = PlayerPrefs.GetInt("dollar").ToString("C0");
+    }
+
+    public void EnableSpawn(string spawnName) {
+        NPC_Spawner.transform.Find(spawnName).gameObject.SetActive(true);
     }
 }
