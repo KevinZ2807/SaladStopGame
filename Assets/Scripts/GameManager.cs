@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
     void Start() {
         instance = this;
+        money = PlayerPrefs.GetInt("dollar");
+        moneyText.text = PlayerPrefs.GetInt("dollar").ToString("C0");
     }
     public void PauseGame() {
         Time.timeScale = 0; // Stops the time
@@ -23,5 +25,8 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("dollar",PlayerPrefs.GetInt("dollar") + earnAmount);
         moneyText.text = PlayerPrefs.GetInt("dollar").ToString("C0");
         //moneyText.text = money.ToString() + "$";
+    }
+    public void SetMoneyUI() {
+        moneyText.text = PlayerPrefs.GetInt("dollar").ToString("C0");
     }
 }

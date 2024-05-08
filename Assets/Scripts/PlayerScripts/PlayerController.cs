@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using TMPro;
 using DG.Tweening;
 
     public class PlayerController : MonoBehaviour
@@ -107,10 +106,6 @@ using DG.Tweening;
 
         private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PlaceDown")) {
-            Debug.Log("Start Working");
-            other.GetComponent<ServiceTable>().Work();
-        }   
         if (other.CompareTag("dollar"))
         {
             Destroy(other.gameObject);
@@ -143,7 +138,7 @@ using DG.Tweening;
                     var secondPaper = stuffs.ElementAt(i);
                     
                     secondPaper.position = new Vector3(Mathf.Lerp(secondPaper.position.x,firstPaper.position.x,Time.deltaTime * 15f),
-                    Mathf.Lerp(secondPaper.position.y,firstPaper.position.y + 0.17f,Time.deltaTime * 15f),firstPaper.position.z);
+                    Mathf.Lerp(secondPaper.position.y,firstPaper.position.y + 0.05f,Time.deltaTime * 15f),firstPaper.position.z);
                 }
             }
         }
@@ -176,7 +171,7 @@ using DG.Tweening;
             Vector3 moveDir = new Vector3(h, 0f, v);
             if (moveDir != Vector3.zero) lastMoveDir = moveDir; 
             if (Physics.Raycast(transform.position,transform.forward,out var raycastHit,1f)) { // Create a raycast to detect object in front
-                if (raycastHit.collider.CompareTag("Pickup") && stuffs.Count < 21) {
+                if (raycastHit.collider.CompareTag("Pickup") && stuffs.Count < maxiumCarry) {
                     Debug.Log(raycastHit);
                     var stuff = raycastHit.collider.transform;
                     stuff.rotation = Quaternion.Euler(stuff.rotation.x,Random.Range(0f,180f),stuff.rotation.z);

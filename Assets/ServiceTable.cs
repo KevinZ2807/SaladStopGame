@@ -11,6 +11,8 @@ public class ServiceTable : MonoBehaviour
     [SerializeField] private GameObject money;
     private float YAxis = 0f;
     private IEnumerator makeMoneyIE;
+    private float cooldown = 0f;
+    private bool isWorking = false;
 
     private void Start()
     {
@@ -21,9 +23,18 @@ public class ServiceTable : MonoBehaviour
     {
         //female_anim.SetBool("work",true);
         
-        InvokeRepeating("DOSubmitPapers",2f,1f);
-
+        InvokeRepeating("DOSubmitPapers",3f,1f);
+        
         StartCoroutine(makeMoneyIE);
+    }
+
+    void Update() {
+        cooldown -= Time.deltaTime;
+        if (transform.childCount != 0 && cooldown <= 0 && !isWorking) {
+            Work();
+            Debug.Log("Update work()");
+            cooldown = 1f;
+        }
     }
 
     private IEnumerator MakeMoney()
@@ -31,30 +42,36 @@ public class ServiceTable : MonoBehaviour
         Debug.Log("Making money");
         var counter = 0;
         var MoneyPlaceIndex = 0;
-        
-        yield return new WaitForSecondsRealtime(2);
+        isWorking = true;
+        yield return new WaitForSecondsRealtime(1f);
 
         while (counter < transform.childCount)
         {
-            Debug.Log("Enter while loop");
-            GameObject NewDollar = Instantiate(money, new Vector3(moneyPlace.GetChild(MoneyPlaceIndex).position.x,
-                    YAxis, moneyPlace.GetChild(MoneyPlaceIndex).position.z),
-                moneyPlace.GetChild(MoneyPlaceIndex).rotation);
+            if (transform.childCount > 0) {
+                Destroy(transform.GetChild(transform.childCount - 1).gameObject,1f);
+                Debug.Log("Enter while loop");
+                var moneyCoordinate = moneyPlace.GetChild(MoneyPlaceIndex);
+                GameObject NewDollar = Instantiate(money, new Vector3(moneyCoordinate.position.x,
+                        moneyCoordinate.position.y + YAxis, moneyCoordinate.position.z),
+                    moneyPlace.GetChild(MoneyPlaceIndex).rotation);
 
-            NewDollar.transform.DOScale(new Vector3(0.4f, 0.4f, 0.6f), 0.5f).SetEase(Ease.OutElastic);
+                NewDollar.transform.DOScale(new Vector3(0.4f, 0.4f, 0.6f), 0.5f).SetEase(Ease.OutElastic);
 
-            if (MoneyPlaceIndex < moneyPlace.childCount - 1)
-            {
-                MoneyPlaceIndex++;
+                if (MoneyPlaceIndex < moneyPlace.childCount - 1)
+                {
+                    MoneyPlaceIndex++;
+                }
+                else
+                {
+                    MoneyPlaceIndex = 0;
+                    YAxis += 0.05f;
+                }
+                yield return new WaitForSecondsRealtime(2f);
             }
-            else
-            {
-                MoneyPlaceIndex = 0;
-                YAxis += 0.01f;
-            }
-            
-            yield return new WaitForSecondsRealtime(3f);
         }
+        
+        isWorking = false;
+        yield break;
     }
 
     void DOSubmitPapers()
